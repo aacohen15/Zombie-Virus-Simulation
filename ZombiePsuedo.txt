@@ -1,0 +1,116 @@
+def Zombiola():
+
+	SUSCEPTIBLE = 0
+	INFECTED = 1
+	REMOVED = 2
+	BREAK_FROM_LOOP = 3
+	
+	suspectiblePop = 92
+	infectedPop = 8
+	removedPop = 0
+	
+	dayCount = 0 #incrementated when currentState equals Susceptible after first loop
+	totalPopulation = susceptiblePop + infectedPop + removedPop 
+	
+	currentState = SUSCEPTIBLE
+
+
+	while suspectiblePop is greater than 0:
+		
+		if currentState equals SUSCEPTIBLE:
+			if HealthLow() returns True:
+				if HealthRecovered() returns True:
+					if TotalPopulation equals 100:
+						dayCount plus 1
+						continue the loop #new Susceptible
+		
+					else:
+						currentState = BREAK_FROM_LOOP
+						continue the loop #error found -- simulates break  
+		
+				else:
+					if TotalPopulation equals 100:
+						currentState equals REMOVED
+						continue the loop #change of state -- same Susceptible)
+					else:
+						currentState = BREAK_FROM_LOOP
+						continue the loop #error found -- simulates break
+		
+			if  exConditions() return true:
+				currentState equals REMOVED
+				suspectiblePop minus 1 
+				continue the loop #change state -- same Susceptible
+		
+			if  Kill() returns true:
+				if  Bite() returns true:
+					currentState equals INFECTED
+					suspectiblePop minus 1 
+					continue the loop #change state -- Susceptible is now Infected
+				else:
+					infectedPop minus 1
+					currentState equals REMOVED
+					continue the loop #change state -- Infected killed
+			else:
+				if TotalPopulation equals 100:
+					dayCount plus 1
+					continue the loop #new Susceptible
+				else:
+					currentState = BREAK_FROM_LOOP
+					continue the loop #error found -- simulates break 
+	
+		
+		if currentState equals INFECTED:
+			infected plus 1
+			if  Kill() returns true:
+				if  Bite() returns true: 
+					if TotalPopulation equals 100:
+						suspectiblePop minus 1
+						dayCount plus 1
+						currentState equals Susceptible
+						continue the loop #new Susceptible
+		
+					else:
+						currentState = BREAK_FROM_LOOP
+						continue the loop #error found -- simulates break 
+					
+				else:
+					infectedPop minus 1
+					currentState equals Removed
+					continue the loop #change state -- Infected killed
+			
+			if  exConditions() return true:
+				currentState equals REMOVED
+				infectedPop minus 1 
+				continue the loop #change state -- same Infected
+			else:
+				if TotalPopulation equals 100:
+						dayCount plus 1
+						currentState equals Susceptible
+						continue the loop #new Susceptible
+		
+					else:
+						currentState = BREAK_FROM_LOOP
+						continue the loop #error found -- simulates break 
+	
+		
+		if currentState equals REMOVED:
+			if TotalPopulation equals 100:
+				dayCount plus 1
+				removedPop plus 1 
+				currentState equals SUSCEPTIBLE
+		
+			else:
+				currentState = BREAK_FROM_LOOP
+				continue the loop #error found -- simulates break  
+		
+
+		
+		if currentState equals BREAK_FROM_LOOP:
+			return "Total Population Error: Restart Simualtion"
+			break
+	
+
+	return """ All Survivors have Perished...
+			Total Infected: {infectedPop}
+			Total Dead: {removedPop}
+			The Simulation Lasted {dayCount} Days. """
